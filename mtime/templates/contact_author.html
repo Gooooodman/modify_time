@@ -1,0 +1,61 @@
+<html>
+<style type="text/css">
+    {# <ul class="errorlist">。。。</ul> #}
+    {# ul标签下的class="errorlist"的属性进行渲染 #}{# 标签下的属性 #}
+    ul.errorlist {
+        margin: 0;
+        padding: 0;
+    }
+    {# <ul class="errorlist"><li>单词个数低于4个!</li></ul> #}
+    {# errorlist class下的 li标签内的元素进行渲染 #}{# 属性下一级的标签 #}
+    .errorlist li {
+        background-color: red;
+        color: white;
+        display: block;
+        font-size: 10px;
+        margin: 0 0 3px;
+        padding: 4px 5px;
+    }
+    .field{
+        background-color:  FloralWhite;
+    }
+</style>
+<head>
+    <title>Contact us</title>
+</head>
+<body>
+    {% if form.errors %}
+        <p style="color: red;">
+            Please correct the error{{ form.errors|pluralize }} below.
+        </p>
+    {% endif %}
+
+    <form action="" method="post">
+        <div class="field">
+            {# 自动生成的默认错误信息显示 #}
+            {# 会被翻译成：<ul class="errorlist"><li>这个字段是必填项。</li></ul> #}
+            {{ form.subject.errors }}
+            <label for="id_subject">页面自定义的主题:</label>
+            {{ form.subject }}
+            {# 自定义的错误信息显示 #}
+            {% if form.subject.errors%}
+            <label for="id_self_def_error_info" style="color: red;">
+                *自定义错误信息：主题不能为空
+            </label>
+            {% endif %}
+
+        </div>
+        <div class="field">
+            {{ form.email.errors }}
+            <label for="id_email">页面中自定义的email:</label>
+            {{ form.email }}
+        </div>
+        <div class="field">
+            {{ form.message.errors }}
+            <label for="id_message">页面中自定义的信息:</label>
+            {{ form.message }}
+        </div>
+        <input type="submit" value="提交">
+    </form>
+</body>
+</html>
