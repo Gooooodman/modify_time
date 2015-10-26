@@ -29,6 +29,7 @@
 	});
 	$("#postForm").ajaxForm({
 		type: "post",
+		timeout:30000,
 		url: "{% url "mtime:index2" %}",
 		success: function(data){
 			$('input[type=test]').val(data.mtime);
@@ -43,6 +44,9 @@
         $('#loading').hide();
     });
 
+    $(document).ajaxError(function(){
+        	$('textarea').val("请求超时,请重试....");
+        });
 
 </script>
 
