@@ -1,56 +1,80 @@
-<script src="/static/js/jquery-2.0.2.min.js"></script>
-<script src="/static/js/jquery.form.js"></script>
+<!DOCTYPE HTML>
+<html>
+    <head>
+        <meta http-equiv="content-type" content="text/html; charset=utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+		<script src="/static/js/jquery-2.0.2.min.js"></script>
+		<script src="/static/js/jquery.form.js"></script>
 
+		<title>修改机器时间</title>
 
-
-<title>修改机器时间</title>
-
-功能 : 修改测试英语,台湾,泰语测试服机器时间
-<form id="postForm" >
-语言 ：<input type="radio" name="lang" value= "en" />英语
-<input type="radio" name="lang" value= "tw" checked="checked"/>台湾
-<input type="radio" name="lang" value= "tl" />泰语 </br>
-版本 ：<input type="radio" name="version" value= "test" checked="checked"/>最新服
-<input type="radio" name="version" value= "online" />线上服 </br>
-修改时间 ：<input type="test" name="mtime" value="2015-10-22 23:57:00" ></br>
-执行结果 ：<img id="loading" src="/static/images/ajax-loader.gif" style="display:none;">
-</br><textarea rows="5" cols="50">
+		功能 : 修改测试英语,台湾,泰语测试服机器时间(测试完成需点恢复时间)
+		<form id="postForm" >
+		语言 ：<input type="radio" name="lang" value= "en" />英语
+		<input type="radio" name="lang" value= "tw" checked="checked"/>台湾
+		<input type="radio" name="lang" value= "tl" />泰语 </br>
+		版本 ：<input type="radio" name="version" value= "test" checked="checked"/>最新服
+		<input type="radio" name="version" value= "online" />线上服 </br>
+		修改时间 ：<input type="test" name="mtime" value="2015-11-01 23:57:00" ></br>
+		执行结果 ：<img id="loading" src="/static/images/ajax-loader.gif" style="display:none;">
+		</br><textarea rows="5" cols="50">
 {{stdout}}
-
 {{ret}}</textarea></br>
-<input type="submit" value="确认修改" />
-</form>
+		<input type="submit" value="确认修改" />
+
+		</form>
+
+
+{#        按钮2#}
+<input type="button" id="bt2" value="恢复时间" />
+
+
+		<script>
+			$('input[type=submit]').click(function(){
+		        $('textarea').val("请稍后...");
+			});
+			$("#postForm").ajaxForm({
+				type: "post",
+				timeout:60000,
+				url: "{% url "mtime:index2" %}",
+				success: function(data){
+					$('input[type=test]').val(data.mtime);
+					$('textarea').val(data.ret);
+				}
+			});
+
+
+		    $(document).ajaxStart(function(){
+		        $('#loading').show();
+		    }).ajaxStop(function(){
+		        $('#loading').hide();
+		    });
+
+		    $(document).ajaxError(function(){
+		        	$('textarea').val("请求超时,请重试....");
+		        });
+
+{#        ############ 按钮 2  部分 ####################}
+		    $("#bt2").click(function(){
+		        var lang = $("#postForm input[name=lang]:checked").val();
+                var version = $("#postForm input[name=version]").val();
+{#                console.log(lang, version)#}
+                $.ajax({
+		    		url:"/mtime/back/?lang="+lang+"&version="+version+"",
+                    type:"get",
+                    success:function(data){
+                        $('textarea').val(data);
+                    },
+		    	});
+		    });
 
 
 
-<script>
-	$('input[type=submit]').click(function(){
-        $('textarea').val("请稍后...");
-	});
-	$("#postForm").ajaxForm({
-		type: "post",
-		timeout:30000,
-		url: "{% url "mtime:index2" %}",
-		success: function(data){
-			$('input[type=test]').val(data.mtime);
-			$('textarea').val(data.ret);
-		}
-	})
 
+		</script>
 
-    $(document).ajaxStart(function(){
-        $('#loading').show();
-    }).ajaxStop(function(){
-        $('#loading').hide();
-    });
-
-    $(document).ajaxError(function(){
-        	$('textarea').val("请求超时,请重试....");
-        });
-
-</script>
-
-
-
+	</head>
+</html>
 
 
