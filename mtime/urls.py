@@ -5,7 +5,7 @@ from . import views
 urlpatterns = patterns('mtime',
     # url(r'^$', views.index, name='index'),
     url(r'^index2/$', views.index2, name='index2'),
-    url(r'^back/$', views.back_time, name='back'),
+    url(r'^back/', views.back_time, name='back'),
     # url(r'(?P<question_id>[0-9]+)/$',views.detail,name='detail'),
     # # ex: /polls/5/results/
     # url(r'^(?P<question_id>[0-9]+)/results/$', views.results, name='results'),
@@ -32,6 +32,7 @@ urlpatterns = patterns('mtime',
 #form test
     url(r'^contact_author/$', views.contact_author,name="contact_author"),
     url(r'^thanks/$', views.thanks,name='thanks'),    
-    url(r'^hostlist/$', views.HostsList,name="HostsList"),  
+    #url(r'^hostlist/$', views.HostsList,name="HostsList"), 
+    url(r'^hostlist/$', views.HostsList.as_view(), name='HostsList'), 
     url(r'^create_host/$',views.create_host),  
 )

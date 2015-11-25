@@ -1,0 +1,9 @@
+{% load mark %}
+<div class="blog-post">
+            <h3 class="blog-post-title">
+                <a href="/article/{{ article.id }}/">{{ article.caption }}</a>
+            </h3>
+            <p class="blog-post-meta">{{ article.publish_time }} <a href="#">Mark</a></p>
+            <p>{{ article.content|my_markdown|safe }}</p>
+            <!--上一行增加了过滤器-->
+</div><!-- /.blog-post -->

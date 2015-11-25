@@ -128,11 +128,11 @@ def main(avgr):
 	if option.lang == 'tw':
 		ip="210.200.14.28"
 		if option.online:
-			server="tw_s3"
+			server="tw_s998"
 			if option.mtime:
 				m_time(ip,port,server,option.mtime)
 		if option.new :
-			server="tw_s2"
+			server="tw_s999"
 			if option.mtime:				
 				m_time(ip,port,server,option.mtime)
 	

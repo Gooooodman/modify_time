@@ -3,6 +3,7 @@
 import sys
 reload(sys)
 sys.setdefaultencoding('utf-8')
+from markdown import markdown  
 import subprocess
 from django.utils import timezone
 from django.http import HttpResponse,Http404,HttpResponseRedirect
@@ -19,6 +20,7 @@ from django.views.generic import TemplateView
 from .models import *
 from .forms import PostForm,ContactForm,HostsListForm
 
+import time
 
 
 def post_list(request):
@@ -94,9 +96,21 @@ def thanks(request):
 
 ########### FORM    ################
 
-def HostsList(request):
-    all_host= HostList.objects.all()
-    return render_to_response('host_list.html', {'all_host_list': all_host})
+# def HostsList(request):
+#     all_host= HostList.objects.all()
+#     return render_to_response('host_list.html', {'all_host_list': all_host})
+
+
+#使用通用视图
+class HostsList(generic.ListView):
+    template_name = 'host_list.html'
+    context_object_name = 'all_host_list'
+    def get_queryset(self):
+        return HostList.objects.all()
+
+
+
+
 
 
 @csrf_exempt
@@ -209,17 +223,6 @@ class AboutView(TemplateView):
 
 
 
-
-
-
-
-
-
-
-
-
-
-
 @csrf_exempt
 def index2(request):
     if request.method=='POST':
@@ -252,7 +255,7 @@ def index2(request):
         #台湾区域
         #tw_cmd = "python mtime/modify_time.py --lang tw --nowtime"
         tw_cmd = "python mtime/modify_time2.py --lang tw --nowtime"
-        print tw_cmd
+        print time.strftime("%Y-%m-%d %X", time.localtime())+":"+tw_cmd
         tw_ret=subprocess.Popen(tw_cmd,stdout=subprocess.PIPE,stderr=subprocess.PIPE,shell=True)
         tw_stdout,tw_stderr = tw_ret.communicate()
         if tw_ret.returncode != 0:
@@ -263,7 +266,7 @@ def index2(request):
         #英语区域
         #en_cmd = "python mtime/modify_time.py --lang en --nowtime"
         en_cmd = "python mtime/modify_time2.py --lang en --nowtime"
-        print en_cmd
+        print time.strftime("%Y-%m-%d %X", time.localtime())+":"+en_cmd
         en_ret=subprocess.Popen(en_cmd,stdout=subprocess.PIPE,stderr=subprocess.PIPE,shell=True)
         en_stdout,en_stderr = en_ret.communicate()
         if en_ret.returncode != 0:
@@ -274,7 +277,7 @@ def index2(request):
         #泰语区域
         #tl_cmd = "python mtime/modify_time.py --lang tl --nowtime"
         tl_cmd = "python mtime/modify_time2.py --lang tl --nowtime"
-        print tl_cmd
+        print time.strftime("%Y-%m-%d %X", time.localtime())+":"+tl_cmd
         tl_ret=subprocess.Popen(tl_cmd,stdout=subprocess.PIPE,stderr=subprocess.PIPE,shell=True)
         tl_stdout,tl_stderr = tl_ret.communicate()
         if tl_ret.returncode != 0:
@@ -292,7 +295,7 @@ def index2(request):
             'request':request,
         }  
         #print request.META['HTTP_USER_AGENT']
-        return render_to_response('index.html',kwvars)		
+        return render_to_response('index_css.html',kwvars)		
 
 
 
@@ -303,12 +306,12 @@ def back_time(request):
     if version == "test":
         server="最新服"
         cmd = "python mtime/modify_time2.py --lang %s --new --backnow"%lang
-    else:
+    elif version == "online":
         server="线上服"
         cmd = "python mtime/modify_time2.py --lang %s --online --backnow"%lang
     #mtime=request.GET["mtime"]
     #print lang,version
-    print cmd
+    print time.strftime("%Y-%m-%d %X", time.localtime())+":"+cmd
     ret=subprocess.Popen(cmd,stdout=subprocess.PIPE,stderr=subprocess.PIPE,shell=True)
     stdout,stderr = ret.communicate()
     if ret.returncode != 0:

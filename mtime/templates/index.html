@@ -16,7 +16,7 @@
 		<input type="radio" name="lang" value= "tl" />泰语 </br>
 		版本 ：<input type="radio" name="version" value= "test" checked="checked"/>最新服
 		<input type="radio" name="version" value= "online" />线上服 </br>
-		修改时间 ：<input type="test" name="mtime" value="2015-11-01 23:57:00" ></br>
+		修改时间 ：<input type="test" name="mtime" value="2015-11-20 23:57:00" ></br>
 		执行结果 ：<img id="loading" src="/static/images/ajax-loader.gif" style="display:none;">
 		</br><textarea rows="5" cols="50">
 {{stdout}}
@@ -58,7 +58,7 @@
 {#        ############ 按钮 2  部分 ####################}
 		    $("#bt2").click(function(){
 		        var lang = $("#postForm input[name=lang]:checked").val();
-                var version = $("#postForm input[name=version]").val();
+                var version = $("#postForm input[name=version]:checked").val();
 {#                console.log(lang, version)#}
                 $.ajax({
 		    		url:"/mtime/back/?lang="+lang+"&version="+version+"",
