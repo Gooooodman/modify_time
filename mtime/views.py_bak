@@ -19,7 +19,7 @@ from django.views.generic import TemplateView
 
 from .models import *
 from .forms import PostForm,ContactForm,HostsListForm
-import ConfigParser
+
 import time
 
 
@@ -225,12 +225,10 @@ class AboutView(TemplateView):
 
 @csrf_exempt
 def index2(request):
-    ip_address=request.META.get("REMOTE_ADDR",None)
     if request.method=='POST':
         lang=request.POST["lang"]
         version=request.POST["version"]
         mtime=request.POST["mtime"]
-#	ip_address=request.META.get("REMOTE_ADDR",None)
         if version == "test":
             ch="最新服"
             #cmd="python mtime/modify_time.py --lang %s --time '%s' --new"%(lang,mtime)
@@ -239,7 +237,7 @@ def index2(request):
             ch="线上服"
             #cmd="python mtime/modify_time.py --lang %s --time '%s' --online"%(lang,mtime)
             cmd="python mtime/modify_time2.py --lang %s --time '%s' --online"%(lang,mtime)
-        print "|------->  "+ip_address+" "+time.strftime("%Y-%m-%d %X", time.localtime())+":"+cmd
+        print cmd
         ret=subprocess.Popen(cmd,stdout=subprocess.PIPE,stderr=subprocess.PIPE,shell=True)
         stdout,stderr = ret.communicate()
         if ret.returncode != 0:
@@ -254,25 +252,74 @@ def index2(request):
         return HttpResponse(json.dumps(kwvars),content_type='application/json')
 
     else:
-        cf = ConfigParser.ConfigParser()    
-        cf.read("/data/django/yunwei/mtime/servers.conf") 
-        secs = cf.sections()
-        stdouts=""
-        for s in secs:
-            cmd = "python mtime/modify_time2.py --lang %s --nowtime"%s 
-            print "|------->  "+ip_address+" "+time.strftime("%Y-%m-%d %X", time.localtime())+":"+cmd
-            ret = subprocess.Popen(cmd,stdout=subprocess.PIPE,stderr=subprocess.PIPE,shell=True)
-            stdout,stderr = ret.communicate()
-            if ret.returncode != 0:
-                std = "查看%s当前时间失败!!!..请联系运维护..失败信息如下:%s-%s \n"%(s,stdout.strip("\n"),stderr.strip("\n"))
-            else:
-                std = "%s-测试服当前时间:%s \n"%(s,stdout.strip("\n"))
-            stdouts += std 
+        #台湾区域
+        #tw_cmd = "python mtime/modify_time.py --lang tw --nowtime"
+        tw_cmd = "python mtime/modify_time2.py --lang tw --nowtime"
+        print time.strftime("%Y-%m-%d %X", time.localtime())+":"+tw_cmd
+        tw_ret=subprocess.Popen(tw_cmd,stdout=subprocess.PIPE,stderr=subprocess.PIPE,shell=True)
+        tw_stdout,tw_stderr = tw_ret.communicate()
+        if tw_ret.returncode != 0:
+            twret = "查看tw当前时间失败!!!..请联系运维护..\n失败信息如下:"+tw_stdout+tw_stderr
+        else:
+            twret = "查看tw当前时间成功!!!..请进行选择测试."
+        tw_time=tw_stdout.strip("\n")
+        #英语区域
+        #en_cmd = "python mtime/modify_time.py --lang en --nowtime"
+        en_cmd = "python mtime/modify_time2.py --lang en --nowtime"
+        print time.strftime("%Y-%m-%d %X", time.localtime())+":"+en_cmd
+        en_ret=subprocess.Popen(en_cmd,stdout=subprocess.PIPE,stderr=subprocess.PIPE,shell=True)
+        en_stdout,en_stderr = en_ret.communicate()
+        if en_ret.returncode != 0:
+            enret = "查看en当前时间失败!!!..请联系运维护..\n失败信息如下:"+en_stdout+en_stderr
+        else:
+            enret = "查看en当前时间成功!!!..请进行选择测试."
+        en_time=en_stdout.strip("\n")
+        #泰语区域
+        #tl_cmd = "python mtime/modify_time.py --lang tl --nowtime"
+        tl_cmd = "python mtime/modify_time2.py --lang tl --nowtime"
+        print time.strftime("%Y-%m-%d %X", time.localtime())+":"+tl_cmd
+        tl_ret=subprocess.Popen(tl_cmd,stdout=subprocess.PIPE,stderr=subprocess.PIPE,shell=True)
+        tl_stdout,tl_stderr = tl_ret.communicate()
+        if tl_ret.returncode != 0:
+            tlret = "查看en当前时间失败!!!..请联系运维护..\n失败信息如下:"+tl_stdout+tl_stderr
+        else:
+            tlret = "查看en当前时间成功!!!..请进行选择测试."
+        tl_time=tl_stdout.strip("\n")
+        #越南区域
+        #tl_cmd = "python mtime/modify_time.py --lang tl --nowtime"
+        vn_cmd = "python mtime/modify_time2.py --lang vn --nowtime"
+        print time.strftime("%Y-%m-%d %X", time.localtime())+":"+vn_cmd
+        vn_ret=subprocess.Popen(vn_cmd,stdout=subprocess.PIPE,stderr=subprocess.PIPE,shell=True)
+        vn_stdout,vn_stderr = vn_ret.communicate()
+        if vn_ret.returncode != 0:
+            vnret = "查看en当前时间失败!!!..请联系运维护..\n失败信息如下:"+vn_stdout+vn_stderr
+        else:
+            vnret = "查看en当前时间成功!!!..请进行选择测试."
+        vn_time=vn_stdout.strip("\n")
 
+
+        yy_cmd = "python mtime/modify_time2.py --lang yy --nowtime"
+        print time.strftime("%Y-%m-%d %X", time.localtime())+":"+yy_cmd
+        yy_ret=subprocess.Popen(yy_cmd,stdout=subprocess.PIPE,stderr=subprocess.PIPE,shell=True)
+        yy_stdout,yy_stderr = yy_ret.communicate()
+        if yy_ret.returncode != 0:
+            yyret = "查看yy当前时间失败!!!..请联系运维护..\n失败信息如下:"+yy_stdout+yy_stderr
+        else:
+            yyret = "查看yy当前时间成功!!!..请进行选择测试."
+        yy_time=yy_stdout.strip("\n")
+
+
+        stdout = '英语-测试服当前时间:%s \n台湾-测试服当前时间:%s \n泰语-测试服当前时间:%s \n越南-测试服当前时间:%s \n越狱-测试服当前时间:%s'%(en_time,tw_time,tl_time,vn_time,yy_time)
         kwvars = {
-            'stdout':stdouts,        
+            'enret':enret,
+            'twret':twret,
+            'tlret':tlret,
+            'vnret':vnret,
+	    'yyret':yyret,
+            'stdout':stdout,        
             'request':request,
         }  
+
         return render_to_response('index_css.html',kwvars)		
 
 
@@ -281,7 +328,6 @@ def index2(request):
 def back_time(request):
     lang=request.GET.get("lang")
     version=request.GET.get("version")
-    ip_address=request.META.get("REMOTE_ADDR",None)
     if version == "test":
         server="最新服"
         cmd = "python mtime/modify_time2.py --lang %s --new --backnow"%lang
@@ -290,7 +336,7 @@ def back_time(request):
         cmd = "python mtime/modify_time2.py --lang %s --online --backnow"%lang
     #mtime=request.GET["mtime"]
     #print lang,version
-    print "|-------> "+ip_address+" "+time.strftime("%Y-%m-%d %X", time.localtime())+":"+cmd
+    print time.strftime("%Y-%m-%d %X", time.localtime())+":"+cmd
     ret=subprocess.Popen(cmd,stdout=subprocess.PIPE,stderr=subprocess.PIPE,shell=True)
     stdout,stderr = ret.communicate()
     if ret.returncode != 0:

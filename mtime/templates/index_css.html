@@ -35,6 +35,25 @@
                 泰语
               </label>
             </div>
+	    <div>
+              <label class="checkbox-inline">
+                <input type="radio" name="lang" id="optionsRadios4" value="vn">
+                越南
+              </label>
+            </div>
+
+            <div>
+              <label class="checkbox-inline">
+                <input type="radio" name="lang" id="optionsRadios5" value="yy">
+                越狱
+              </label>
+            </div>
+            <div>
+              <label class="checkbox-inline">
+                <input type="radio" name="lang" id="optionsRadios5" value="android1">
+                安卓镜像1
+              </label>
+            </div>
 
 
                 
@@ -54,7 +73,7 @@
             
             <div>
                 <label>修改时间 ：</label>
-                <input type="test" name="mtime" value="2015-11-20 23:57:00" >
+                <input type="test" name="mtime" value="2016-01-01 23:57:00" >
             </div>
             <div>		
             	<label>执行结果 ：</label>
@@ -71,7 +90,15 @@
 {#        按钮2#}
 <input type="button" class="btn btn-warning" id="bt2" value="恢复时间" />
 
+<hr style="height:5px;border:none;border-top:5px ridge green;" />
+<h5>
+注: </br>
+1.修改时间时,日期格式要保持一致.</br>
+2.出现不成功的状态,请重试.(可能连接服务器超时所致)</br>
+3.恢复时间时,时间不需要填写,但需要选择开始修改的<u>语言和版本</u>
 
+
+</h5>
 		<script>
 			$('input[type=submit]').click(function(){
 		        $('textarea').val("请稍后...");

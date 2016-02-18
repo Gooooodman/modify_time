@@ -35,4 +35,5 @@ urlpatterns = patterns('mtime',
     #url(r'^hostlist/$', views.HostsList,name="HostsList"), 
     url(r'^hostlist/$', views.HostsList.as_view(), name='HostsList'), 
     url(r'^create_host/$',views.create_host),  
+    url(r'^tag/$',views.tagcloud),
 )

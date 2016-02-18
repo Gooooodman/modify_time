@@ -84,7 +84,7 @@ def main(avgr):
 			getnowtime(ip,port)
 
 	if option.lang == 'tw':
-		ip="210.200.14.28"
+		ip="113.196.57.220"
 		sshconnect=ssh(host=ip,port=port)
 		if option.online:
 			server="tw_s3"
