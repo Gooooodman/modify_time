@@ -12,6 +12,6 @@
 
 
 
-![image](https://github.com/Gooooodman/modify_timemod_time.png)
+![image](https://github.com/Gooooodman/modify_time/mod_time.png)
 
 
